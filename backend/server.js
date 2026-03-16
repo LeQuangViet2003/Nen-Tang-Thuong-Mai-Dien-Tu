@@ -30,6 +30,15 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'API đang hoạt động bình thường' });
 });
 
+// Serve frontend in production (Unified Build)
+const path = require('path');
+const frontendDistPath = path.join(__dirname, '../frontend/dist');
+app.use(express.static(frontendDistPath));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(frontendDistPath, 'index.html'));
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server chạy tại cổng ${PORT}`);
